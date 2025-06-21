@@ -1,18 +1,20 @@
-# Sistema de Cargabilidad (SCRE) - ZOTGM
+# Sistema de Cargabilidad - ZOTGM
 
 ## 📋 Descripción
 
-Sistema de monitoreo de cargabilidad para la Zona de Operación de Transmisión Guerrero Morelos (ZOTGM). Este sistema permite el análisis de la capacidad de carga de la red eléctrica, monitoreo de parámetros de potencia y gestión de eventos de cargabilidad.
+Sistema de monitoreo y análisis de cargabilidad de la red eléctrica para la Zona de Operación de Transmisión Guerrero Morelos (ZOTGM). Este sistema permite el seguimiento de la capacidad de carga (MW) de diferentes elementos de la red, proporcionando una visualización clara del estado operativo mediante un sistema de semáforos.
+
+**⚠️ Importante:** Este sistema está diseñado para funcionar en conjunto con archivos .exe específicos que recopilan datos del sistema PI (Plant Information System). El archivo .exe debe generar un archivo `resultados.json` con el formato especificado.
 
 ## 🚀 Características Principales
 
-- **Monitoreo en tiempo real** de parámetros de cargabilidad
-- **Análisis automático** de eventos de sobrecarga
-- **Cálculo de índices** de cargabilidad por nodo
-- **Sistema de semáforos** visual para estado de carga
+- **Monitoreo en tiempo real** de capacidad de carga (MW)
+- **Sistema de semáforos** para visualización rápida del estado
+- **Interfaz de tarjetas** con barras de progreso
 - **Exportación de datos** a Excel y CSV
 - **Sistema de autenticación** para administradores
-- **Interfaz intuitiva** con diseño de tarjetas
+- **Gestión de tags** y configuración de límites
+- **Procesamiento optimizado** de grandes volúmenes de datos
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -20,6 +22,8 @@ Sistema de monitoreo de cargabilidad para la Zona de Operación de Transmisión 
 - **Frontend:** HTML5, CSS3, JavaScript (jQuery)
 - **Base de datos:** Archivos JSON
 - **Servidor:** Apache (XAMPP)
+- **Sistema PI:** Plant Information System (OSIsoft)
+- **Extractor de datos:** PI_BridgeLink.exe (personalizado)
 
 ## 📁 Estructura del Proyecto
 
@@ -29,40 +33,83 @@ Cargabilidad/
 ├── procesar.php           # Backend para procesamiento de datos
 ├── auth.php               # Sistema de autenticación
 ├── tagadmin.php           # Administración de tags
-├── tabla.js               # Gestión de tabla de datos
-├── exportar.js            # Sistema de exportación
+├── tabla.js               # Lógica de la tabla y semáforos
+├── exportar.js            # Funciones de exportación
 ├── autenticacion.js       # Autenticación frontend
 ├── estilo.css             # Estilos del sistema
 ├── tags.json              # Configuración de tags y límites
-├── eval.json              # Evaluaciones guardadas
-├── PI_BridgeLink.exe      # Programa de extracción de datos
+├── PI_BridgeLink.exe      # Programa de extracción de datos PI
+├── resultados.json        # Datos extraídos del sistema PI
+├── cargabilidad.csv       # Datos de cargabilidad
 └── README.md              # Este archivo
 ```
+
+## 🔌 Integración con Sistema PI
+
+### Requisitos del Archivo .exe
+El sistema requiere un archivo ejecutable (ej: `PI_BridgeLink.exe`) que:
+
+1. **Se conecte al sistema PI** usando las credenciales configuradas
+2. **Reciba parámetros de fecha** (fecha_inicial, fecha_final)
+3. **Extraiga datos de carga** de los tags configurados
+4. **Genere un archivo `resultados.json`** con el formato especificado
+
+### Formato del Archivo resultados.json
+
+```json
+[
+  {
+    "tag": "02GMOQMD B -01    CARGA         MW",
+    "timestamp": "2025-06-21 10:30:15",
+    "value": 185.6
+  },
+  {
+    "tag": "02GMOPIC B -01    CARGA         MW", 
+    "timestamp": "2025-06-21 10:30:20",
+    "value": 142.3
+  },
+  {
+    "tag": "02GMOQMD B -02    CARGA         MW",
+    "timestamp": "2025-06-21 10:30:25", 
+    "value": 198.7
+  },
+  {
+    "tag": "02GMOLAT B -01    CARGA         MW",
+    "timestamp": "2025-06-21 10:30:30",
+    "value": 165.2
+  }
+]
+```
+
+### Estructura de Datos
+- **tag:** Identificador del punto de medición (debe coincidir con tags.json)
+- **timestamp:** Fecha y hora de la medición (formato: YYYY-MM-DD HH:MM:SS)
+- **value:** Valor de carga medido en MW (número decimal)
 
 ## 🎯 Funcionalidades
 
 ### Sistema de Semáforos
-- **Verde:** Carga normal (0-80%)
-- **Amarillo:** Carga moderada (80-95%)
-- **Rojo:** Carga crítica (95-100%)
-- **Negro:** Sobrecarga (>100%)
+- **Verde:** Carga normal (0-80% de capacidad)
+- **Amarillo:** Carga moderada (80-95% de capacidad)
+- **Rojo:** Carga crítica (95-100% de capacidad)
+- **Gris:** Sin datos o fuera de servicio
+
+### Visualización de Datos
+- **Tarjetas individuales** para cada elemento
+- **Barras de progreso** con porcentajes
+- **Colores dinámicos** según el estado
+- **Información detallada** al hacer hover
 
 ### Procesamiento de Datos
 - Extracción automática de datos con PI_BridgeLink.exe
-- Filtrado de eventos de cargabilidad
-- Cálculo automático de porcentajes de carga
-- Optimización de rendimiento
-
-### Sistema de Evaluaciones
-- Marcado de eventos como "Cuenta" o "No cuenta"
-- Justificaciones personalizadas
-- Guardado automático de evaluaciones
-- Historial de evaluaciones
+- Cálculo de porcentajes de capacidad
+- Clasificación automática por estado
+- Optimización de memoria para grandes volúmenes
 
 ### Exportación
 - Exportación a Excel con formato profesional
 - Exportación a CSV para análisis externos
-- Reportes detallados por nodo
+- Reportes detallados por estado
 - Estadísticas de cargabilidad
 
 ## 🔧 Instalación
@@ -70,6 +117,8 @@ Cargabilidad/
 1. **Requisitos:**
    - XAMPP (Apache + PHP 7.4+)
    - Git
+   - Acceso al sistema PI
+   - Archivo .exe de extracción de datos
 
 2. **Clonar el repositorio:**
    ```bash
@@ -82,31 +131,32 @@ Cargabilidad/
 
 4. **Configuración inicial:**
    - Verificar permisos de escritura en archivos JSON
-   - Configurar PI_BridgeLink.exe si es necesario
+   - Configurar PI_BridgeLink.exe con credenciales PI
+   - Verificar que el archivo .exe genere resultados.json
 
 ## 📊 Uso del Sistema
 
 ### Acceso Principal
 - URL: `http://localhost/Cargabilidad/`
 - Interfaz principal con sistema de semáforos
-- Tabla de eventos de cargabilidad
+- Visualización por tarjetas con barras de progreso
 
 ### Procesamiento de Datos
 1. Seleccionar fechas de inicio y fin
 2. Hacer clic en "Procesar Datos"
 3. El sistema ejecutará PI_BridgeLink.exe automáticamente
-4. Los resultados se mostrarán con semáforos
+4. Los resultados se mostrarán en tarjetas con semáforos
 
-### Evaluación de Eventos
-1. Marcar checkboxes "Cuenta" o "No cuenta"
-2. Agregar justificaciones si es necesario
-3. Guardar evaluaciones
-4. Los cambios se reflejan en las métricas
+### Interpretación de Semáforos
+- **🟢 Verde:** Operación normal, carga dentro de límites seguros
+- **🟡 Amarillo:** Atención requerida, carga aproximándose a límites
+- **🔴 Rojo:** Alerta crítica, carga cerca del máximo
+- **⚫ Gris:** Sin datos disponibles
 
 ### Exportación
 1. Usar botones "Exportar a Excel" o "Exportar a CSV"
 2. Los archivos se descargan automáticamente
-3. Incluyen todas las métricas y evaluaciones
+3. Incluyen todos los datos y estados de cargabilidad
 
 ## 🔐 Autenticación
 
@@ -116,26 +166,27 @@ Cargabilidad/
 
 ## 📈 Métricas del Sistema
 
-- **Total de Eventos:** Número total de eventos de cargabilidad
-- **Eventos Válidos:** Eventos marcados como "Cuenta"
-- **Eventos Justificados:** Eventos marcados como "No cuenta"
-- **Porcentaje de Carga:** Promedio de carga por nodo
+- **Total de Elementos:** Número total de puntos monitoreados
+- **Elementos Verdes:** Operando normalmente
+- **Elementos Amarillos:** Requieren atención
+- **Elementos Rojos:** Críticos
+- **Elementos Sin Datos:** Sin información disponible
 
 ## 🎨 Características de Diseño
 
-- **Sistema de Semáforos:** Visualización intuitiva del estado de carga
-- **Tarjetas Responsive:** Diseño moderno con tarjetas
-- **Optimizado:** Carga rápida con grandes volúmenes de datos
+- **Responsive:** Adaptable a diferentes tamaños de pantalla
+- **Intuitivo:** Sistema de semáforos fácil de interpretar
+- **Optimizado:** Carga rápida con procesamiento eficiente
 - **Profesional:** Diseño corporativo con logo CFE
 
 ## 🔄 Actualizaciones
 
 ### Versión 2025
-- Sistema de semáforos visual
-- Interfaz de tarjetas modernizada
+- Sistema de semáforos con tarjetas
+- Barras de progreso visuales
 - Exportación mejorada
-- Optimización de rendimiento
-- Sistema de paginación
+- Optimización de memoria
+- Interfaz moderna y responsiva
 
 ## 👨‍💻 Autor
 
