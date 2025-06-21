@@ -1,0 +1,400 @@
+/**
+ * Estilos del Sistema de Cargabilidad - ZOTGM
+ * 
+ * @author Kaori Andrea López Basurto
+ * @collaborator Emerson Salvador Plancarte Cerecedo
+ * @version 2025
+ * @description Estilos CSS optimizados para el sistema de monitoreo de cargabilidad
+ * 
+ * Características:
+ * - Diseño semáforo con indicadores visuales claros
+ * - Interfaz responsiva y moderna
+ * - Animaciones suaves para cambios de estado
+ * - Optimización para monitoreo continuo
+ * - Compatibilidad con múltiples navegadores
+ */
+
+/* Estilos generales del sistema de cargabilidad */
+.dropdown-menu {
+  min-width: 200px;
+  /* ancho fijo para evitar que cambie */
+  overflow: hidden;
+  /* evita overflow visible */
+  padding: 0.25rem 0;
+  /* espacio arriba/abajo */
+  box-sizing: border-box;
+
+}
+
+.dropdown-menu .dropdown-item {
+  position: relative;
+  padding-left: 1.5rem;
+  color: #212529;
+  cursor: pointer;
+  transition: padding-left 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+  display: inline-block;
+  /* para que el ::after tenga el ancho del texto */
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+  background-color: #cff4fc !important;
+  color: inherit !important;
+  /* pequeño aumento para animar, pero sin mover mucho */
+  box-shadow: 0 4px 8px rgba(12, 76, 138, 0.15);
+  text-decoration: none;
+  outline: none;
+}
+
+.dropdown-menu .dropdown-item::after {
+  content: "";
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  height: 2px;
+  background: #055160;
+  width: 0;
+  transition: width 0.3s ease;
+  display: inline-block;
+}
+
+.dropdown-menu .dropdown-item:hover::after,
+.dropdown-menu .dropdown-item:focus::after {
+  width: 100%;
+  /* ancho igual al texto */
+}
+
+
+/* Ejemplo: Cambiar el color de fondo de la barra de navegación personalizada */
+.custom-navbar {
+  background-color: rgb(58, 148, 187);
+  /* Azul claro */
+}
+
+.custom-navbar2 {
+  background-color: rgb(35, 152, 65);
+  /* Azul claro */
+}
+
+/* Personalización de enlaces en el navbar */
+.navbar-nav .nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #5d0dfd;
+  /* Color primario de Bootstrap */
+}
+
+/* Ajustes para el logotipo, si deseas modificar la imagen o el texto */
+.navbar-brand img {
+  border-radius: 50%;
+}
+
+/* Personalizar el botón de búsqueda */
+.input-group .form-control {
+  border-left: none;
+}
+
+/* Opcional: Agregar estilo a los dropdown-items */
+.dropdown-menu .dropdown-item:hover {
+  background-color: #033fe3;
+}
+
+.boton {
+  max-width: 200px !important;
+  width: 100% !important;
+}
+
+th .ordenar {
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  color: #033fe3;
+  text-decoration: underline;
+}
+
+.flecha {
+  margin-left: 5px;
+  font-size: 0.8em;
+  color: #555;
+}
+
+td.text-start {
+  text-align: left !important;
+}
+
+.evaluacion-col {
+  width: 200px;
+  /* Ajusta el tamaño de la columna Evaluación */
+  text-align: center;
+}
+
+/* Fade-in general para contenedores importantes */
+.fade-in {
+  opacity: 0;
+  animation: fadeInAnimation 0.8s ease forwards;
+}
+
+@keyframes fadeInAnimation {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animación para navbar-toggler (rotar icono hamburguesa) */
+.navbar-toggler-icon {
+  transition: transform 0.3s ease;
+}
+
+.navbar-toggler.collapsed .navbar-toggler-icon {
+  transform: rotate(0deg);
+}
+
+.navbar-toggler:not(.collapsed) .navbar-toggler-icon {
+  transform: rotate(90deg);
+}
+
+/* Hover suave para enlaces de navbar */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #0d6efd;
+  /* bootstrap primary */
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after,
+.nav-link:focus::after {
+  width: 100%;
+}
+
+
+/* Animación modal fade (bootstrap ya la tiene, pero mejoramos suavidad) */
+.modal.fade .modal-dialog {
+  transform: translateY(-50px);
+  transition: transform 0.4s ease;
+}
+
+.modal.fade.show .modal-dialog {
+  transform: translateY(0);
+}
+
+@keyframes fadeInAlert {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animación suave de deslizamiento hacia abajo con opacidad */
+@keyframes dropdownSlideFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-menu {
+  animation: dropdownSlideFadeIn 300ms ease forwards;
+  transform-origin: top right;
+}
+
+/* ===== NUEVOS ESTILOS PARA SISTEMA DE SEMÁFORO ===== */
+
+/* Estilos para las tarjetas de semáforo */
+.semaforo-item {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.semaforo-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.semaforo-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.semaforo-item:hover::before {
+  left: 100%;
+}
+
+/* Efectos específicos por estado */
+.semaforo-item.bg-success {
+  background: linear-gradient(135deg, #198754, #20c997) !important;
+}
+
+.semaforo-item.bg-warning {
+  background: linear-gradient(135deg, #ffc107, #fd7e14) !important;
+}
+
+.semaforo-item.bg-danger {
+  background: linear-gradient(135deg, #dc3545, #e83e8c) !important;
+}
+
+/* Iconos animados */
+.semaforo-item i {
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.semaforo-item:hover i {
+  transform: scale(1.1);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Barra de progreso personalizada */
+.progress {
+  background: rgba(0,0,0,0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+  transition: width 0.8s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Animación de entrada para las tarjetas */
+.card {
+  animation: slideInUp 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive para dispositivos móviles */
+@media (max-width: 768px) {
+  .semaforo-item {
+    margin-bottom: 1rem;
+  }
+  
+  .semaforo-item i {
+    font-size: 2rem !important;
+  }
+  
+  .card-header h5 {
+    font-size: 0.9rem;
+  }
+}
+
+/* Efectos de hover mejorados para botones */
+.btn-primary {
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Optimización de rendimiento */
+.semaforo-item,
+.progress-bar,
+.card {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Estilos personalizados para Cargabilidad */
+
+/* Color de precaución más oscuro y visible */
+.text-precauccion {
+    color: #fd7e14 !important; /* Naranja más oscuro */
+}
+
+/* Mejorar visibilidad de elementos de precaución */
+.bg-precauccion {
+    background-color: #fd7e14 !important;
+}
+
+/* Estilos para la tabla compacta */
+.table-sm th {
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.table-sm td {
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+/* Mejorar visibilidad de las barras de progreso */
+.progress {
+    border-radius: 10px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+}
+
+/* Estilos para los filtros */
+#filtros-area .card {
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Mejorar visibilidad de los iconos en headers */
+.table thead th i {
+    font-size: 1.1em;
+}
